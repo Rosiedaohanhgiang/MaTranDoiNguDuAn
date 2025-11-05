@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Trận "Đội Ngũ Tiên Phong" (BDA)</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Oswald -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Heroicons CDN (cho các biểu tượng) -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Oswald', sans-serif;
+            background-color: #f7fafc; /* light gray */
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #5C6BC0;
+            border-radius: 6px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1a237e;
+        }
+        
+        /* Lớp active cho tab */
+        .tab-btn.active {
+            border-bottom-color: #FF9800; /* Orange */
+            color: #FF9800;
+            font-weight: 600;
+            background-color: rgba(255, 152, 0, 0.05);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tùy chỉnh table */
+        th {
+            background-color: #1a237e;
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Card cho Yếu tố Thành công */
+        .csf-card {
+            background: linear-gradient(145deg, #ffffff, #e6e9ee);
+            transition: all 0.3s ease;
+        }
+        .csf-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-[#1a237e] text-white p-6 shadow-xl sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-3xl font-bold tracking-wider uppercase">
+                Ma Trận "Đội Ngũ Tiên Phong" (BDA HOAN TT)
+            </h1>
+            <p class="text-lg text-[#FF9800] font-light tracking-wide mt-2 md:mt-0">
+                Công cụ Điều hành Dự án Chuyển đổi
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4 md:p-8 flex-grow">
+
+        <!-- Thanh Tabs điều hướng -->
+        <div class="flex flex-wrap justify-center border-b border-gray-300 mb-8 shadow-sm rounded-lg bg-white overflow-hidden">
+            <button class="tab-btn active text-lg font-medium py-4 px-6 text-gray-600 border-b-4 border-transparent hover:text-[#FF9800] hover:bg-gray-50 transition-all flex-grow md:flex-grow-0" data-tab="1">
+                1. Thành phần & Mục tiêu
+            </button>
+            <button class="tab-btn text-lg font-medium py-4 px-6 text-gray-600 border-b-4 border-transparent hover:text-[#FF9800] hover:bg-gray-50 transition-all flex-grow md:flex-grow-0" data-tab="2">
+                2. Trách nhiệm & Tương tác
+            </button>
+            <button class="tab-btn text-lg font-medium py-4 px-6 text-gray-600 border-b-4 border-transparent hover:text-[#FF9800] hover:bg-gray-50 transition-all flex-grow md:flex-grow-0" data-tab="3">
+                3. Thẩm quyền & Quyền hạn
+            </button>
+            <button class="tab-btn text-lg font-medium py-4 px-6 text-gray-600 border-b-4 border-transparent hover:text-[#FF9800] hover:bg-gray-50 transition-all flex-grow md:flex-grow-0" data-tab="4">
+                4. Yếu tố Thành công
+            </button>
+            <button class="tab-btn text-lg font-medium py-4 px-6 text-gray-600 border-b-4 border-transparent hover:text-[#FF9800] hover:bg-gray-50 transition-all flex-grow md:flex-grow-0" data-tab="5">
+                5. Hoạt động Định kỳ
+            </button>
+        </div>
+        
+        <!-- Nội dung Tabs -->
+        <div id="tab-content-container">
+            
+            <!-- Tab 1: Thành phần & Mục tiêu (Composition & Purpose Matrix) -->
+            <div id="tab-1" class="tab-content active">
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl border border-gray-200">
+                    <h2 class="text-3xl font-semibold text-[#1a237e] mb-6 border-b-2 border-[#FF9800] pb-3">
+                        1. Ma trận Thành phần & Mục tiêu (Composition & Purpose Matrix)
+                    </h2>
+                    <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                        Việc lựa chọn thành viên BDA là yếu tố tiên quyết để phá vỡ "Hiệu ứng Silo" và giải quyết "nỗi đau" thiếu tin tưởng.
+                    </p>
+                    
+                    <h3 class="text-2xl font-semibold text-[#1a237e] mb-4 pb-2 border-b border-gray-300">
+                        Bảng phân tích Nhiệm vụ & Năng lực
+                    </h3>
+
+                    <!-- Bảng chi tiết vai trò -->
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200 mb-12">
+                        <table class="min-w-full divide-y divide-gray-200 text-base">
+                            <thead>
+                                <tr>
+                                    <th>Vai trò</th>
+                                    <th>Thành viên (Đề cử)</th>
+                                    <th>Nhiệm vụ chính</th>
+                                    <th>Quyền hạn</th>
+                                    <th>Năng lực Yêu cầu</th>
+                                    <th>Phẩm chất Yêu cầu</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 text-gray-700">
+                                
+                                <!-- 1. Người Bảo trợ -->
+                                <tr>
+                                    <td class="font-bold text-lg text-[#1a237e] uppercase align-top">Người Bảo trợ (Sponsor)</td>
+                                    <td class="font-semibold text-[#5C6BC0] align-top">Bà Trần Thị Kim Hoàn (CEO)</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Chỉ định và trao quyền cho BDA.</li>
+                                            <li>Đảm bảo BDA có thẩm quyền cao nhất.</li>
+                                            <li>Ra quyết định cuối cùng (Go/No-go) cho các cột mốc quan trọng (VD: Áp dụng Lương 3P).</li>
+                                            <li>Gỡ bỏ các rào cản cấp cao nhất.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Quyền quyết định cao nhất dự án.</li>
+                                            <li>Quyền triệu tập Ban Lãnh Đạo.</li>
+                                            <li>Quyền "phủ quyết" các kháng cự.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Ra quyết định chiến lược.</li>
+                                            <li>Tầm nhìn xa.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Quyết đoán.</li>
+                                            <li>Cam kết tuyệt đối.</li>
+                                            <li>Tin tưởng vào BDA.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                                <!-- 2. Trưởng Ban Dự án -->
+                                <tr>
+                                    <td class="font-bold text-lg text-[#1a237e] uppercase align-top">Trưởng Ban Dự án (Lead)</td>
+                                    <td class="font-semibold text-[#5C6BC0] align-top">QL Cấp trung Uy tín (VD: GĐ Vận hành)</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>"Đầu mối liên lạc" chính của BDA.</li>
+                                            <li>Điều phối lịch họp, tài nguyên BDA.</li>
+                                            <li>Theo dõi và đảm bảo tiến độ dự án.</li>
+                                            <li>Báo cáo tiến độ trực tiếp cho Sponsor.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Triệu tập họp BDA.</li>
+                                            <li>Yêu cầu thành viên BDA báo cáo.</li>
+                                            <li>Báo cáo trực tiếp cho CEO.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Quản lý dự án & Tổ chức.</li>
+                                            <li>Giao tiếp & Điều phối.</li>
+                                            <li>Giải quyết vấn đề.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Có uy tín nội bộ.</li>
+                                            <li>Trung lập, khách quan.</li>
+                                            <li>Kiên trì.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                                <!-- 3. Tiên phong - MKT -->
+                                <tr>
+                                    <td class="font-bold text-lg text-[#FF9800] uppercase align-top">Tiên phong - MKT</td>
+                                    <td class="font-semibold text-[#5C6BC0] align-top">Trưởng/Phó phòng Marketing</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Đại diện cho "nỗi đau" của MKT.</li>
+                                            <li>Tham gia tranh luận & xây dựng SLA (Quick Win #1).</li>
+                                            <li>Cung cấp góc nhìn MKT cho các hệ thống mới (PMS).</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Cam kết SLA thay mặt phòng MKT.</li>
+                                            <li>Yêu cầu Sales hợp tác theo SLA.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Am hiểu MKT.</li>
+                                            <li>Tư duy dữ liệu (leads).</li>
+                                            <li>Đàm phán.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Cởi mở, Hợp tác.</li>
+                                            <li>Dám cam kết.</li>
+                                            <li>Thẳng thắn.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                                <!-- 4. Tiên phong - Sales -->
+                                <tr>
+                                    <td class="font-bold text-lg text-[#FF9800] uppercase align-top">Tiên phong - Sales</td>
+                                    <td class="font-semibold text-[#5C6BC0] align-top">Trưởng/Phó phòng Sales</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Đại diện cho "nỗi đau" của Sales.</li>
+                                            <li>Đảm bảo giải pháp (RACI, PMS) phải thực tế.</li>
+                                            <li>Tham gia cam kết SLA (Quick Win #1).</li>
+                                            <li>Thí điểm áp dụng PMS cho đội ngũ.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Cam kết SLA thay mặt phòng Sales.</li>
+                                            <li>Phản hồi chất lượng lead cho MKT.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Am hiểu Sales.</li>
+                                            <li>Tư duy thực chiến.</li>
+                                            <li>Đánh giá hiệu suất.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Thực tế, Thẳng thắn.</li>
+                                            <li>Hợp tác.</li>
+                                            <li>Chịu áp lực.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                                <!-- 5. Nòng cốt - HR -->
+                                <tr>
+                                    <td class="font-bold text-lg text-[#009688] uppercase align-top">Nòng cốt - HR</td>
+                                    <td class="font-semibold text-[#5C6BC0] align-top">Chuyên viên Nhân sự Cấp cao</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>"Người kế thừa" dự án.</li>
+                                            <li>Tiếp nhận, học hỏi để vận hành hệ thống (PMS, 3P, BEI) sau dự án.</li>
+                                            <li>Trợ giúp Trưởng BDA về mặt hành chính dự án.</li>
+                                            <li>Trở thành 'trainer' nội bộ (VD: BEI).</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Yêu cầu Build Talents đào tạo sâu.</li>
+                                            <li>Tham gia mọi buổi thiết kế hệ thống HR.</li>
+                                            <li>Thí điểm tuyển dụng bằng BEI.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Chuyên môn HR (C&B, L&D).</li>
+                                            <li>Khả năng học hỏi nhanh.</li>
+                                            <li>Tư duy hệ thống.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Cầu thị, Ham học.</li>
+                                            <li>Tỉ mỉ, Cẩn thận.</li>
+                                            <li>Kiên nhẫn.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                                <!-- 6. Nòng cốt - Tài chính -->
+                                <tr>
+                                    <td class="font-bold text-lg text-[#009688] uppercase align-top">Nòng cốt - Tài chính</td>
+                                    <td class="font-semibold text-[#5C6BC0] align-top">Kế toán trưởng / TP. Tài chính</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>"Người gác cổng" quy trình & dữ liệu.</li>
+                                            <li>Góp ý chính cho RACI duyệt chi (Quick Win #3).</li>
+                                            <li>Xác thực dữ liệu lương (bảo mật).</li>
+                                            <li>Tham gia mô phỏng Lương 3P.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Truy cập & xác thực dữ liệu lương.</li>
+                                            <li>"Veto" các mô phỏng 3P nếu sai số liệu.</li>
+                                            <li>Yêu cầu điều chỉnh RACI nếu rủi ro.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Chuyên môn Tài chính/Kế toán.</li>
+                                            <li>Phân tích dữ liệu, Số liệu.</li>
+                                            <li>Tư duy quy trình.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Cẩn trọng, Chi tiết.</li>
+                                            <li>Chính trực (bảo mật).</li>
+                                            <li>Logic.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                                <!-- 7. Tạo ảnh hưởng -->
+                                <tr>
+                                    <td class="font-bold text-lg text-gray-700 uppercase align-top">Tạo ảnh hưởng (Influencer)</td>
+                                    <td class="font-semibold text-[#5C6BC0] align-top">Một "Key Person" (QL/Nhân viên)</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Truyền thông phi chính thức.</li>
+                                            <li>Thu thập "sự thật ngầm", tâm tư NV.</li>
+                                            <li>Lan tỏa tinh thần tích cực cho dự án.</li>
+                                            <li>Giải thích "lợi ích" (WIIFM) cho NV khác.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Quyền "lắng nghe" và báo cáo (ẩn danh) tâm tư NV cho BDA.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Lắng nghe chủ động.</li>
+                                            <li>Giao tiếp & Tạo ảnh hưởng.</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Có uy tín (không cần chức vụ).</li>
+                                            <li>Tích cực, Đồng cảm.</li>
+                                            <li>Khách quan.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Bổ sung: Phân tích Lý do Chiến lược (Nội dung cũ) -->
+                    <h3 class="text-2xl font-semibold text-[#1a237e] mb-6 pb-2 border-b border-gray-300">
+                        Phân tích Lý do Chiến lược & Tình huống
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Card Người Bảo trợ -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg border border-indigo-100 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center gap-4 mb-3">
+                                <ion-icon name="shield-checkmark" class="text-4xl text-[#1a237e]"></ion-icon>
+                                <div>
+                                    <h3 class="text-xl font-bold text-[#1a237e] uppercase">Người Bảo trợ (Sponsor)</h3>
+                                    <p class="text-base font-semibold text-[#5C6BC0]">Bà Trần Thị Kim Hoàn (CEO)</p>
+                                </div>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mt-4 mb-2 uppercase">Lý do Chiến lược:</h4>
+                            <p class="text-base text-gray-600">Người chỉ định BDA. Đảm bảo BDA có thẩm quyền cao nhất. Là người ra quyết định cuối cùng cho các cột mốc quan trọng.</p>
+                            <p class="text-sm italic text-gray-500 mt-2">VD: Khi BDA và BLĐ tranh cãi về việc áp dụng Lương 3P, chị Hoàn sẽ là người ra quyết định "Chúng ta sẽ làm".</p>
+                        </div>
+                        
+                        <!-- Card Trưởng Ban Dự án -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg border border-indigo-100 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center gap-4 mb-3">
+                                <ion-icon name="map" class="text-4xl text-[#1a237e]"></ion-icon>
+                                <div>
+                                    <h3 class="text-xl font-bold text-[#1a237e] uppercase">Trưởng Ban Dự án (Lead)</h3>
+                                    <p class="text-base font-semibold text-[#5C6BC0]">QL Cấp trung Uy tín (VD: GĐ Vận hành)</p>
+                                </div>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mt-4 mb-2 uppercase">Lý do Chiến lược:</h4>
+                            <p class="text-base text-gray-600">"Đầu mối liên lạc" chính. Điều phối tài nguyên, lịch họp. Đảm bảo dự án đi đúng tiến độ và báo cáo trực tiếp cho Người Bảo trợ.</p>
+                            <p class="text-sm italic text-gray-500 mt-2">VD: GĐ Vận hành sẽ là người gửi email triệu tập cuộc họp BDA hàng tuần và báo cáo tiến độ cho chị Hoàn.</p>
+                        </div>
+                        
+                        <!-- Card Thành viên MKT -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg border border-orange-100 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center gap-4 mb-3">
+                                <ion-icon name="megaphone" class="text-4xl text-[#FF9800]"></ion-icon>
+                                <div>
+                                    <h3 class="text-xl font-bold text-[#FF9800] uppercase">Tiên phong - MKT</h3>
+                                    <p class="text-base font-semibold text-[#5C6BC0]">Trưởng/Phó phòng Marketing</p>
+                                </div>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mt-4 mb-2 uppercase">Lý do Chiến lược:</h4>
+                            <p class="text-base text-gray-600">Phá vỡ Silo: Đại diện trực tiếp cho một bên của "nỗi đau" xung đột Sales-MKT. Tham gia xây dựng Mục tiêu chung & SLA (Quick Win #1).</p>
+                            <p class="text-sm italic text-gray-500 mt-2">VD: Khi xây dựng SLA, TP. MKT sẽ cam kết "Lead phải có SĐT và nhu cầu", đổi lại TP. Sales cam kết "Gọi lead trong 4h".</p>
+                        </div>
+
+                        <!-- Card Thành viên Sales -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg border border-orange-100 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center gap-4 mb-3">
+                                <ion-icon name="trending-up" class="text-4xl text-[#FF9800]"></ion-icon>
+                                <div>
+                                    <h3 class="text-xl font-bold text-[#FF9800] uppercase">Tiên phong - Sales</h3>
+                                    <p class="text-base font-semibold text-[#5C6BC0]">Trưởng/Phó phòng Sales</p>
+                                </div>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mt-4 mb-2 uppercase">Lý do Chiến lược:</h4>
+                            <p class="text-base text-gray-600">Phá vỡ Silo: Đại diện trực tiếp cho bên còn lại của xung đột. Đảm bảo các giải pháp (RACI, PMS) thực tế cho đội ngũ kinh doanh.</p>
+                            <p class="text-sm italic text-gray-500 mt-2">VD: Đảm bảo KPI trong PMS mới phải đo lường được "Tỷ lệ chốt đơn / Lead" thay vì chỉ đo "Số cuộc gọi" (phi thực tế).</p>
+                        </div>
+
+                        <!-- Card Thành viên HR -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg border border-green-100 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center gap-4 mb-3">
+                                <ion-icon name="people" class="text-4xl text-[#009688]"></ion-icon>
+                                <div>
+                                    <h3 class="text-xl font-bold text-[#009688] uppercase">Nòng cốt - HR</h3>
+                                    <p class="text-base font-semibold text-[#5C6BC0]">Chuyên viên Nhân sự Cấp cao</p>
+                                </div>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mt-4 mb-2 uppercase">Lý do Chiến lược:</h4>
+                            <p class="text-base text-gray-600">Người kế thừa: Tiếp nhận, học hỏi và chuẩn bị để vận hành các hệ thống mới (PMS, Lương 3P...) sau khi dự án kết thúc.</p>
+                            <p class="text-sm italic text-gray-500 mt-2">VD: Khi BT đào tạo phỏng vấn BEI, chuyên viên HR này sẽ học, áp dụng, và sau đó trở thành 'trainer' nội bộ.</p>
+                        </div>
+
+                        <!-- Card Thành viên Tài chính -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg border border-green-100 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center gap-4 mb-3">
+                                <ion-icon name="calculator" class="text-4xl text-[#009688]"></ion-icon>
+                                <div>
+                                    <h3 class="text-xl font-bold text-[#009688] uppercase">Nòng cốt - Tài chính</h3>
+                                    <p class="text-base font-semibold text-[#5C6BC0]">Kế toán trưởng / TP. Tài chính</p>
+                                </div>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mt-4 mb-2 uppercase">Lý do Chiến lược:</h4>
+                            <p class="text-base text-gray-600">Người gác cổng Quy trình: Cực kỳ quan trọng cho Quick Win #3 (RACI duyệt chi) và Giai đoạn 4 (Mô phỏng Lương 3P).</p>
+                            <p class="text-sm italic text-gray-500 mt-2">VD: Khi mô phỏng 3P, Kế toán trưởng sẽ là người xác thực dữ liệu và chạy kịch bản "Ngân sách lương tăng/giảm bao nhiêu?".</p>
+                        </div>
+
+                        <!-- Card Thành viên Tạo ảnh hưởng -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200 hover:shadow-xl transition-shadow lg:col-span-3">
+                            <div class="flex items-center gap-4 mb-3">
+                                <ion-icon name="sparkles" class="text-4xl text-gray-600"></ion-icon>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-700 uppercase">Tạo ảnh hưởng</h3>
+                                    <p class="text-base font-semibold text-[#5C6BC0]">Một "Key Person" (QL/Nhân viên)</p>
+                                </div>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mt-4 mb-2 uppercase">Lý do Chiến lược:</h4>
+                            <p class="text-base text-gray-600">Người Truyền thông: Là người có uy tín, được lắng nghe. Giúp truyền thông phi chính thức và thu thập "sự thật ngầm".</p>
+                            <p class="text-sm italic text-gray-500 mt-2">VD: Giống chị A (Kế toán), người không phải quản lý nhưng khi chị nói "PMS mới này ổn", 10 nhân viên khác sẽ tin.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab 2: Trách nhiệm & Tương tác (Responsibility & Interaction Matrix) -->
+            <div id="tab-2" class="tab-content">
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl border border-gray-200">
+                    <h2 class="text-3xl font-semibold text-[#1a237e] mb-6 border-b-2 border-[#FF9800] pb-3">
+                        2. Ma trận Trách nhiệm & Tương tác (Responsibility & Interaction Matrix)
+                    </h2>
+                    <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                        BDA là <span class="font-bold text-[#FF9800]">"Đối tác"</span> của Build Talents, không phải <span class="font-bold text-gray-500">"Khách hàng"</span> chờ nhận sản phẩm.
+                    </p>
+                    
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+                        <table class="min-w-full divide-y divide-gray-200 text-base">
+                            <thead>
+                                <tr>
+                                    <th>Hoạt động Dự án (Theo Lộ trình)</th>
+                                    <th>Vai trò của BDA (Nội bộ)</th>
+                                    <th>Tương tác với Build Talents (Tư vấn)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 text-gray-700">
+                                <tr>
+                                    <td class="font-semibold">GĐ 1: Chẩn đoán 360</td>
+                                    <td><span class="font-bold text-[#009688]">Thu thập & Cung cấp:</span> Cung cấp dữ liệu thô, danh sách nhân sự, đảm bảo nhân viên tham gia khảo sát.<p class="text-sm italic text-gray-500 mt-2">VD: Trưởng BDA đảm bảo 100% nhân viên hoàn thành khảo sát OHI đúng hạn.</p></td>
+                                    <td><span class="font-bold text-[#5C6BC0]">Thực thi & Bảo mật:</span> Thực hiện phỏng vấn 1-1, chạy khảo sát, cam kết bảo mật (NDA).<p class="text-sm italic text-gray-500 mt-2">VD: BT phỏng vấn 1-1 Chú Năm (Kho) để hiểu rõ lý do 'kháng cự' của chú.</p></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">GĐ 1: Quick Win #1 (Gỡ rối Sales/MKT)</td>
+                                    <td><span class="font-bold text-[#009688]">Tham gia & Cam kết:</span> Thành viên Sales/MKT trong BDA phải tham gia chính, tranh luận và cam kết tuân thủ SLA & Mục tiêu chung.<p class="text-sm italic text-gray-500 mt-2">VD: TP. Sales & MKT thống nhất: 'Lead MKT phải có SĐT. Sales phải gọi lead trong 4 giờ làm việc.'</p></td>
+                                    <td><span class="font-bold text-[#5C6BC0]">Điều phối & Đúc kết:</span> Điều phối workshop "Đối thoại Cởi mở", đúc kết SLA.<p class="text-sm italic text-gray-500 mt-2">VD: BT điều phối, đảm bảo không ai ngắt lời ai, và ghi lại SLA đã chốt trên bảng.</p></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Hàng tuần: Tư vấn Vận hành HR</td>
+                                    <td><span class="font-bold text-[#009688]">Mang vấn đề đến:</span> Chủ động mang các "case nhân sự nóng", vướng mắc quy trình (tuyển dụng, xung đột...) đến buổi họp.<p class="text-sm italic text-gray-500 mt-2">VD: Thành viên HR mang case 'Em A phòng Sales đòi nghỉ việc vì xung đột KPI với sếp' đến.</p></td>
+                                    <td><span class="font-bold text-[#5C6BC0]">Cung cấp Giải pháp:</span> Tư vấn, "cầm tay chỉ việc" cách xử lý theo chuẩn chuyên nghiệp (gói Support).<p class="text-sm italic text-gray-500 mt-2">VD: BT hướng dẫn cách thực hiện buổi 'Stay Interview' (Phỏng vấn Giữ chân) với em A.</p></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">GĐ 2: Xây dựng Văn hóa & RACI</td>
+                                    <td><span class="font-bold text-[#009688]">Đại diện Góp ý:</span> Đại diện bộ phận góp ý Tầm nhìn, Sứ mệnh. Chỉ ra các điểm "đau" nhất để áp dụng RACI (Quick Win #3).<p class="text-sm italic text-gray-500 mt-2">VD: Thành viên Tài chính chỉ ra quy trình duyệt chi 'cần 5 chữ ký, mất 3 ngày' là điểm đau lớn nhất.</p></td>
+                                    <td><span class="font-bold text-[#5C6BC0]">Dẫn dắt Workshop:</span> Dẫn dắt workshop, cung cấp phương pháp luận (V-M-V, RACI).<p class="text-sm italic text-gray-500 mt-2">VD: BT trình bày 3 mẫu RACI cho quy trình duyệt chi, BDA chọn mẫu phù hợp nhất.</p></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">GĐ 3: Xây dựng Hệ thống (PMS, BEI...)</td>
+                                    <td><span class="font-bold text-[#009688]">Người Thí điểm (Pilot User):</span> Nhóm đầu tiên được đào tạo (Kỹ năng BEI) và áp dụng thử (Giao Mục tiêu Quý 3).<p class="text-sm italic text-gray-500 mt-2">VD: TP. Kinh doanh (BDA) là người đầu tiên giao mục tiêu Q3 cho 2 nhân viên trên phần mềm PMS mới.</p></td>
+                                    <td><span class="font-bold text-[#5C6BC0]">Đào tạo & Hỗ trợ:</span> Cung cấp tài liệu, đào tạo, và "cầm tay chỉ việc" cho BDA trong chu kỳ vận hành đầu tiên.<p class="text-sm italic text-gray-500 mt-2">VD: BT ngồi 1:1 với TP. Kinh doanh để hướng dẫn cách viết mục tiêu SMART trên phần mềm.</p></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">GĐ 4: Xây dựng Lương 3P</td>
+                                    <td><span class="font-bold text-[#009688]">Cung cấp Dữ liệu & Phản hồi:</span> Cung cấp dữ liệu đánh giá (PMS), khung năng lực, và tham gia mô phỏng, đánh giá tác động.<p class="text-sm italic text-gray-500 mt-2">VD: Kế toán trưởng cung cấp file excel lương tháng gần nhất. Thành viên HR cung cấp kết quả PMS.</p></td>
+                                    <td><span class="font-bold text-[#5C6BC0]">Thiết kế & Mô phỏng:</span> Thiết kế hệ thống lương và chạy mô phỏng ngân sách (Simulation).<p class="text-sm italic text-gray-500 mt-2">VD: BT chạy mô phỏng: 'Nếu áp dụng 3P, ngân sách lương tăng 5%, 80% người làm tốt tăng lương.'</p></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Hàng tháng: Truyền thông Nội bộ</td>
+                                    <td><span class="font-bold text-[#009688]">Người Truyền thông (Evangelist):</span> Chủ động chia sẻ "Quick Win", giải thích "WIIFM" (Lợi ích) của dự án cho bộ phận.<p class="text-sm italic text-gray-500 mt-2">VD: Thành viên Sales chia sẻ: 'Tuần rồi áp dụng SLA mới, MKT đưa lead chất hơn, team chốt được 2 HĐ.'</p></td>
+                                    <td><span class="font-bold text-[#5C6BC0]">Cung cấp Tài liệu:</span> Cung cấp Báo cáo Tiến độ hàng tháng để BDA có thông tin truyền thông.<p class="text-sm italic text-gray-500 mt-2">VD: BT gửi 1 slide Infographic: 'Đã gỡ rối 1 quy trình (Sales/MKT), 80% NV đã được đào tạo Văn hóa.'</p></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab 3: Thẩm quyền & Quyền hạn (Authority Matrix) -->
+            <div id="tab-3" class="tab-content">
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl border border-gray-200">
+                    <h2 class="text-3xl font-semibold text-[#1a237e] mb-6 border-b-2 border-[#FF9800] pb-3">
+                        3. Ma trận Thẩm quyền & Quyền hạn (Authority Matrix)
+                    </h2>
+                    <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                        Để thành công, BDA phải có thẩm quyền thực sự, được bảo trợ bởi CEO (Bà Hoàn).
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                        <!-- Cột ĐƯỢC QUYỀN -->
+                        <div class="bg-green-50 p-6 rounded-lg border-2 border-green-200">
+                            <h3 class="flex items-center text-2xl font-bold text-[#009688] mb-4">
+                                <ion-icon name="checkmark-circle-outline" class="mr-3 text-3xl"></ion-icon>
+                                BDA ĐƯỢC QUYỀN (Authorized)
+                            </h3>
+                            <ul class="space-y-4 text-base text-gray-700 list-disc list-inside">
+                                <li>Triệu tập các cá nhân liên quan trong bộ phận của mình để thí điểm quy trình mới (VD: áp dụng RACI mới cho quy trình duyệt chi tại phòng Kế toán).</li>
+                                <li>Yêu cầu các bộ phận cung cấp thông tin, dữ liệu phục vụ cho việc chẩn đoán và xây dựng hệ thống (VD: yêu cầu phòng Sales cung cấp báo cáo doanh số 3 tháng gần nhất).</li>
+                                <li>Báo cáo trực tiếp với CEO (Người Bảo trợ) về các rào cản, sự kháng cự từ các bộ phận khác (VD: báo cáo với chị Hoàn rằng phòng X không hợp tác cung cấp dữ liệu).</li>
+                                <li>Sử dụng "Hotline" và 2 giờ/tuần với Build Talents để giải quyết các vấn đề vận hành (VD: gọi hotline BT hỏi về cách xử lý 1 nhân viên không tuân thủ PMS).</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Cột KHÔNG ĐƯỢC QUYỀN -->
+                        <div class="bg-red-50 p-6 rounded-lg border-2 border-red-200">
+                            <h3 class="flex items-center text-2xl font-bold text-red-600 mb-4">
+                                <ion-icon name="close-circle-outline" class="mr-3 text-3xl"></ion-icon>
+                                BDA KHÔNG ĐƯỢC QUYỀN
+                            </h3>
+                            <ul class="space-y-4 text-base text-gray-700 list-disc list-inside">
+                                <li>Tự ý thay đổi các mục tiêu chiến lược hoặc sản phẩm bàn giao (deliverables) chính của dự án (VD: BDA không thể tự quyết 'Năm nay không làm PMS nữa, chỉ làm Lương 3P').</li>
+                                <li>Ra quyết định cuối cùng về các chính sách mang tính toàn công ty (VD: duyệt Sổ tay Văn hóa, Quy chế Lương) – việc này thuộc về CEO (VD: Trưởng BDA không thể tự duyệt Quy chế Lương mới).</li>
+                                <li>Cam kết các chi phí phát sinh ngoài phạm vi hợp đồng (VD: chi phí in ấn, tổ chức sự kiện) (VD: tự ý đặt in 500 cuốn Sổ tay Văn hóa khi chưa được duyệt chi).</li>
+                                <li>Chia sẻ thông tin bảo mật (VD: kết quả phỏng vấn 1-1, dữ liệu lương cá nhân) ra bên ngoài BDA và BLĐ (VD: thành viên MKT không được tiết lộ kết quả phỏng vấn 1-1 của TP. Sales).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab 4: Yếu tố Thành công (Critical Success Factors) -->
+            <div id="tab-4" class="tab-content">
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl border border-gray-200">
+                    <h2 class="text-3xl font-semibold text-[#1a237e] mb-8 border-b-2 border-[#FF9800] pb-3">
+                        4. Các Yếu tố Thành công (Critical Success Factors)
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- CSF 1 -->
+                        <div class="csf-card flex items-start p-6 rounded-lg shadow-lg border border-gray-200">
+                            <ion-icon name="shield-checkmark" class="text-5xl text-[#1a237e] mr-5 mt-1"></ion-icon>
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#1a237e] mb-2">Sự Bảo trợ Tuyệt đối</h3>
+                                <p class="text-base text-gray-700 leading-relaxed">Bà Hoàn (CEO) phải liên tục khẳng định BDA hành động thay mặt bà. Mọi sự kháng cự với BDA là kháng cự với CEO.</p>
+                                <p class="text-sm italic text-red-600 mt-2">Hệ quả nếu thiếu: Các Trưởng phòng khác sẽ 'phớt lờ' BDA, dự án thất bại ngay từ GĐ 1.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- CSF 2 -->
+                        <div class="csf-card flex items-start p-6 rounded-lg shadow-lg border border-gray-200">
+                            <ion-icon name="people-circle" class="text-5xl text-[#FF9800] mr-5 mt-1"></ion-icon>
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#FF9800] mb-2">Tính Đại diện</h3>
+                                <p class="text-base text-gray-700 leading-relaxed">BDA phải có đủ thành viên từ các "điểm nóng" (Sales, MKT) để giải pháp đưa ra mang tính thực tiễn và phá vỡ được silo.</p>
+                                <p class="text-sm italic text-red-600 mt-2">Hệ quả nếu thiếu: Giải pháp cho Sales/MKT sẽ 'trên trời', không thực tế và bị tẩy chay.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- CSF 3 -->
+                        <div class="csf-card flex items-start p-6 rounded-lg shadow-lg border border-gray-200">
+                            <ion-icon name="rocket" class="text-5xl text-[#009688] mr-5 mt-1"></ion-icon>
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#009688] mb-2">Tính "Tiên phong"</h3>
+                                <p class="text-base text-gray-700 leading-relaxed">Các thành viên BDA phải là những người đầu tiên "làm gương" cho Văn hóa mới (GĐ 2), áp dụng PMS (GĐ 3) một cách nghiêm túc nhất.</p>
+                                <p class="text-sm italic text-red-600 mt-2">Hệ quả nếu thiếu: Nếu thành viên BDA còn không làm, thì không thể yêu cầu 100 nhân viên còn lại tuân theo.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- CSF 4 -->
+                        <div class="csf-card flex items-start p-6 rounded-lg shadow-lg border border-gray-200">
+                            <ion-icon name="calendar" class="text-5xl text-[#5C6BC0] mr-5 mt-1"></ion-icon>
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#5C6BC0] mb-2">Tần suất Hợp tác Cố định</h3>
+                                <p class="text-base text-gray-700 leading-relaxed">Phải duy trì kỷ luật họp 2 giờ/tuần với Build Talents để duy trì đà và giải quyết vấn đề ngay lập tức, tránh tích tụ thành "nỗi đau" mới.</p>
+                                <p class="text-sm italic text-red-600 mt-2">Hệ quả nếu thiếu: Các vấn đề nhỏ (1 case nhân sự) sẽ tích tụ thành 'bom nổ chậm', phá vỡ lòng tin.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 5: Hoạt động Định kỳ & Tương tác -->
+            <div id="tab-5" class="tab-content">
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl border border-gray-200">
+                    <h2 class="text-3xl font-semibold text-[#1a237e] mb-6 border-b-2 border-[#FF9800] pb-3">
+                        5. Ma trận Hoạt động Định kỳ & Tương tác (Rhythm & Interaction Matrix)
+                    </h2>
+                    <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                        Duy trì "nhịp điệu" (rhythm) của dự án là chìa khóa để giữ đà và giải quyết vấn đề kịp thời.
+                    </p>
+                    
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+                        <table class="min-w-full divide-y divide-gray-200 text-base">
+                            <thead>
+                                <tr>
+                                    <th>Tần suất</th>
+                                    <th>Hoạt động</th>
+                                    <th>Tương tác với Ai (Chính)</th>
+                                    <th>Mục tiêu & Nội dung chính</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 text-gray-700">
+                                <!-- Hàng tuần 1 -->
+                                <tr>
+                                    <td class="font-semibold text-[#009688] align-top">Hàng tuần<br>(2 giờ cố định)</td>
+                                    <td class="font-semibold align-top">Họp Vận hành Dự án & Tư vấn HR</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Toàn bộ BDA</li>
+                                            <li>Build Talents (Tư vấn)</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <p class="font-bold">Mục tiêu: "Cầm tay chỉ việc" & giữ tiến độ.</p>
+                                        <ul class="list-disc list-inside space-y-1 mt-2">
+                                            <li>Giải quyết các "case nhân sự nóng" (từ Nòng cốt HR).</li>
+                                            <li>Review tiến độ các Quick Wins (SLA, RACI).</li>
+                                            <li>Build Talents đào tạo/hướng dẫn nghiệp vụ cho GĐ mới.</li>
+                                        </ul>
+                                        <p class="text-sm italic text-gray-500 mt-2">VD: BT hướng dẫn cách xử lý 'Stay Interview' cho 1 NV đòi nghỉ. TP. Sales báo cáo SLA đã được MKT tuân thủ 80%.</p>
+                                    </td>
+                                </tr>
+                                <!-- Hàng tuần 2 -->
+                                <tr>
+                                    <td class="font-semibold text-[#009688] align-top">Hàng tuần<br>(30 phút)</td>
+                                    <td class="font-semibold align-top">Họp nhanh Nội bộ BDA (BDA Huddle)</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Chỉ thành viên BDA</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <p class="font-bold">Mục tiêu: Thống nhất thông tin nội bộ.</p>
+                                        <ul class="list-disc list-inside space-y-1 mt-2">
+                                            <li>Tổng hợp "sự thật ngầm" từ (Influencer).</li>
+                                            <li>Thống nhất các vấn đề cần hỏi/báo cáo với Build Talents.</li>
+                                            <li>Phân công nhiệm vụ truyền thông nội bộ.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <!-- Hàng tháng 1 -->
+                                <tr>
+                                    <td class="font-semibold text-[#5C6BC0] align-top">Hàng tháng</td>
+                                    <td class="font-semibold align-top">Báo cáo Nhanh (Checkpoint) với Sponsor</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Trưởng BDA</li>
+                                            <li>Người Bảo trợ (CEO)</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <p class="font-bold">Mục tiêu: Báo cáo rào cản & xin chỉ đạo.</p>
+                                        <ul class="list-disc list-inside space-y-1 mt-2">
+                                            <li>Báo cáo 3 điểm chính: 1) Đã hoàn thành, 2) Đang vướng mắc, 3) Cần CEO hỗ trợ.</li>
+                                            <li>Xin ý kiến về các "kháng cự" từ bộ phận khác.</li>
+                                        </ul>
+                                        <p class="text-sm italic text-gray-500 mt-2">VD: Báo cáo CEO: 'Phòng X không hợp tác cung cấp dữ liệu, cần CEO ra thông báo'.</p>
+                                    </td>
+                                </tr>
+                                <!-- Hàng tháng 2 -->
+                                <tr>
+                                    <td class="font-semibold text-[#5C6BC0] align-top">Hàng tháng (Liên tục)</td>
+                                    <td class="font-semibold align-top">Truyền thông Nội bộ (Internal Comms)</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Thành viên BDA</li>
+                                            <li>Nhân viên tại bộ phận của họ</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <p class="font-bold">Mục tiêu: Xây dựng lòng tin & lan tỏa.</p>
+                                        <ul class="list-disc list-inside space-y-1 mt-2">
+                                            <li>Chủ động chia sẻ các "Quick Win" (VD: "SLA mới giúp MKT đỡ bị mắng, Sales có lead xịn").</li>
+                                            <li>Giải thích "WIIFM" (Lợi ích) của hệ thống mới cho nhân viên.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <!-- Hàng quý/Cột mốc -->
+                                <tr>
+                                    <td class="font-semibold text-[#1a237e] align-top">Hàng quý / Cột mốc GĐ</td>
+                                    <td class="font-semibold align-top">Họp Đánh giá Cột mốc (Milestone Review)</td>
+                                    <td class="align-top">
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li>Người Bảo trợ (CEO)</li>
+                                            <li>Toàn bộ BDA</li>
+                                            <li>Build Talents</li>
+                                            <li>Ban Lãnh Đạo (khi cần)</li>
+                                        </ul>
+                                    </td>
+                                    <td class="align-top">
+                                        <p class="font-bold">Mục tiêu: Ra quyết định Go/No-Go Giai đoạn mới.</p>
+                                        <ul class="list-disc list-inside space-y-1 mt-2">
+                                            <li>Build Talents & BDA trình bày kết quả GĐ cũ.</li>
+                                            <li>Trình bày hệ thống/chính sách mới (VD: Quy chế Lương 3P).</li>
+                                            <li>CEO ra quyết định cuối cùng: "Duyệt" và "Áp dụng".</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#1a237e] text-white text-center p-6 mt-12 shadow-inner">
+        <p class="font-light tracking-widest uppercase">Rosie Đào Hạnh Giang <span class="text-[#FF9800] font-semibold">CEO Build Talents</span></p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Lấy data-tab attribute
+                    const tabId = tab.getAttribute('data-tab');
+
+                    // Xóa active khỏi tất cả tabs và content
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Thêm active cho tab và content được click
+                    tab.classList.add('active');
+                    document.getElementById(`tab-${tabId}`).classList.add('active');
+                });
+            });
+            
+            // Kích hoạt tab đầu tiên
+            if (tabs.length > 0) {
+                tabs[0].click();
+            }
+        });
+    </script>
+
+</body>
+</html>
